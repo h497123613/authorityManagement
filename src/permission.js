@@ -13,10 +13,8 @@ const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-
-  // set page title
+  // 设置页面标题
   document.title = getPageTitle(to.meta.title)
-
   // determine whether the user has logged in
   const hasToken = getToken()
 
@@ -34,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           await store.dispatch('user/getInfo')
 
-          next({...to})
+          next()
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
@@ -46,7 +44,7 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* has no token*/
-
+    // console.log(111);
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()
